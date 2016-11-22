@@ -310,18 +310,18 @@ def group_tweets_by_state(tweets):
     """
     tweets_by_state = {}
     "*** YOUR CODE HERE***"
-    us_centers = {n: find_center(s) for n, s in us_states.items()}
+    us_centers = {n: find_center(s) for n, s in us_states.items()} #cria um dicionario que liga a chave "N :" ao centro de S onde n e s estão em "us_states.items()"
 
     for state in us_states:
-        tweets_by_state[state] = []
+        tweets_by_state[state] = [] # ele cria uma lista para cada state .
         
     for position in tweets:
         closest_state = find_closest_state(position, us_centers)
         tweets_by_state[closest_state].append(position)
-
+ 
     return tweets_by_state
 
-def most_talkative_state(term):
+def most_talkative_state(term): # retorna a sigla do estado que mais falou esse termo
     """Return the state that has the largest number of tweets containing term.
 
     >>> most_talkative_state('texas')
@@ -331,7 +331,15 @@ def most_talkative_state(term):
     """
     tweets = load_tweets(make_tweet, term)  # A list of tweets containing term
     "*** YOUR CODE HERE ***"
-
+    
+    Tweets = group_tweets_by_state(tweets) #term mais falado
+    largest = 0
+    aux = ''
+    for i in Tweets:
+        if len(Tweets[i]) > largest:
+            largest = len(Tweets[i])
+            aux = i
+    return(aux)
 def average_sentiments(tweets_by_state):
     """Calculate the average sentiment of the states by averaging over all
     the tweets from each state. Return the result as a dictionary from state
@@ -345,7 +353,17 @@ def average_sentiments(tweets_by_state):
     tweets_by_state -- A dictionary from state names to lists of tweets
     """
     averaged_state_sentiments = {}
-    "*** YOUR CODE HERE ***"
+    aux = ''
+    for x in tweets_by_state:
+        sentiments = 0
+        contador = 0
+        for y in tweets_by_state[x]:           
+           aux = analyze_tweet_sentiment(y)
+           if aux != None:
+               sentiments += aux
+               contador += 1
+        if contador != 0:    
+            averaged_state_sentiments[x] = (sentiments / contador)    
     return averaged_state_sentiments
 
 
@@ -366,8 +384,13 @@ def group_tweets_by_hour(tweets):
     tweets -- A list of tweets to be grouped
     """
     tweets_by_hour = {}
-    "*** YOUR CODE HERE ***"
+    for x in range(24): #chaves do dicionário 
+        tweets_by_hour[x] = []
+    for t in tweets: #tweets horas
+        hora = t['time']
+        tweets_by_hour[hora.hour].append(t)       
     return tweets_by_hour
+    
 
 
 # Interaction.  You don't need to read this section of the program.
