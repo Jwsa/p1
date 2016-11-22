@@ -355,13 +355,14 @@ def average_sentiments(tweets_by_state):
     averaged_state_sentiments = {}
     aux = ''
     for x in tweets_by_state:
-        sentiments = 0
         contador = 0
+        sentiments = 0
         for y in tweets_by_state[x]:           
            aux = analyze_tweet_sentiment(y)
            if aux != None:
-               sentiments += aux
-               contador += 1
+               contador = contador + 1
+               sentiments = sentiments + aux
+               
         if contador != 0:    
             averaged_state_sentiments[x] = (sentiments / contador)    
     return averaged_state_sentiments
